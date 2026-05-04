@@ -27,7 +27,8 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body.email || req.body.identifier;
+    const password = req.body.password;
     if (!email || !password) return res.status(400).json({ error: 'Campos requeridos' });
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) return res.status(401).json({ error: 'Credenciales incorrectas' });
